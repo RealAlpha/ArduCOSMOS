@@ -15,7 +15,7 @@ struct telemetryPacket_t
 	uint8_t length = sizeof(telemetryPacket_t);
 	uint8_t id;
 	
-	/* Further information (like the actual data to be logged) will be placed in "sub"-structs */
+	/* Further information (like the actual data to be logged) will be placed in "sub"-structs. A constructor should also be implemented in child structs that sets the ID/length!!! */
 };
 
 /*
@@ -35,7 +35,7 @@ struct telemetryRegistration_t
 
 /*
  * Telemetry state class - handles gathering/sending telemetry off to COSMOS to be analyzed.
- * NOTE - Data gathered needs to be set to the global variables in globals.h, and will be saved in the structures defined within the class
+ * NOTE - For telemetry to be gathered a child struct of telemetryPacket_t (with a constructor & the to be tracked data) should be created, and registered using RegisterTelemetry.
  */
 class TelemetryState : public State
 {

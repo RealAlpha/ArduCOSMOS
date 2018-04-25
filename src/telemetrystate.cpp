@@ -61,10 +61,8 @@ void sendTelemetry(telemetryPacket_t *packet)
 		return;
 	}
 
-	// Since sizeof is calculated at compiletime, we can safely assume that overriding it in all of the subclasses and setting it right away will work. This avoids any complications to do with getting the size of a pointer to a "sub"-struct
-//	telemetryPacket_t packet_nonptr = *packet;
-//	packet->length = sizeof(telemetryPacket_t);
-//	Serial.println(packet->length);
+	// NOTE - Since sizeof is calculated at compiletime, we can safely assume that overriding it in all of the subclasses and setting it right away will work. This avoids any complications to do with getting the size of a pointer to a "sub"-struct
+	// Convert the packet into a const char* so it can more easily be transmitted over the serial connection
 	const char* packet_char = (const char*)packet;	
 
 	for (int i = 0; i < packet->length; i++)
