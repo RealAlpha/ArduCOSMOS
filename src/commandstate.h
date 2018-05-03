@@ -19,6 +19,11 @@ struct __attribute__((packed)) command_t
 };
 
 /*
+ * Macro used to simplify the creation of a command instance. Gets rid of having to take care of the packed/inheretence stuff
+ */
+#define command(A)		struct __attribute__((packed)) A : command_t
+
+/*
  * Type used for functions that are (going to be) called when a command matching the binding's ID comes in.
  */
 typedef void (*commandBinding)(command_t *command);

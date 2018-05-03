@@ -2,7 +2,6 @@
 #define SRC_TELEMETRYSTATE_H_
 
 #include "state.h"
-#include "globals.h"
 
 #include <ArduinoSTL.h>
 #include <vector>

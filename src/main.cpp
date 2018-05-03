@@ -24,7 +24,7 @@ struct lightTelemetry_t : telemetryPacket_t
 lightTelemetry_t lightTelemetry;
 
 // Child struct of command_t
-struct __attribute__((packed)) LEDCommand_t : command_t
+command(LEDCommand_t)
 {
 	LEDCommand_t()
 	{
