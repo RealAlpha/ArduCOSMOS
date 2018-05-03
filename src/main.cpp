@@ -85,18 +85,9 @@ bool registered = false;
 
 bool lightStatus = false;
 
-void LEDBinding(command_t *command)
+void LEDBinding(LEDCommand_t *command)
 {
-	if(lightStatus)
-	{
-		digitalWrite(13, LOW);
-		lightStatus = false;
-	}
-	else
-	{
-		digitalWrite(13, HIGH);
-		lightStatus = true;
-	}
+	analogWrite(9, map(command->value, 0, 1023, 0, 255));
 }
 
 void loop()
@@ -244,7 +235,7 @@ void loop()
 	}
 
 	// Tick the states!
-	////States::Tick();
+	States::Tick();
 	
 	// Delay for a second so we aren't constantly reading the analog data
 	delay(5);
