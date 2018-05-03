@@ -24,6 +24,12 @@ lightTelemetry_t lightTelemetry;
 
 void setup()
 {
+
+	// Testing functionality - set up pin 13 (internal LED) so it can be turned on by a COSMOS command
+	pinMode(13, OUTPUT);
+	digitalWrite(13, LOW);
+
+
 	// Start a serial connection @ 9600hz
 	Serial.begin(9600);
 
@@ -34,6 +40,9 @@ void setup()
 	// Log the light telemetry at a rate of 10hz (100 ms delay between packets; 100 is a multiple of 5 so it's valid)
 	// Register the light telemetry we defined earlier
 	telemetryState->RegisterTelemetry(&lightTelemetry, 100);
+
+	// Set a low timeout so the receiving of commands can be fast (readBytes works, while adding a delay/etc. causes issues)
+	Serial.setTimeout(10);
 }
 
 struct __attribute__((packed)) command_t
@@ -60,7 +69,7 @@ struct commandBinding_t
 };
 
 // Child struct of command_t
-struct LEDCommand_t : command_t
+struct __attribute__((packed)) LEDCommand_t : command_t
 {
 	LEDCommand_t()
 	{
@@ -74,16 +83,46 @@ std::vector<commandBinding_t> commands;
 
 bool registered = false;
 
+bool lightStatus = false;
+
 void LEDBinding(command_t *command)
 {
-	Serial.println("Received Command!");
+	if(lightStatus)
+	{
+		digitalWrite(13, LOW);
+		lightStatus = false;
+	}
+	else
+	{
+		digitalWrite(13, HIGH);
+		lightStatus = true;
+	}
 }
 
 void loop()
 {
+/*
+	size_t size = sizeof(LEDCommand_t);
+	
+//	Serial.println(size);
+
+	LEDCommand_t command;
+	command.id = 1;
+	command.value = 543;
+	
+	const char *commandPtr = (const char*)&command;
+
+	for (int i = 0; i < size; size++)
+	{
+		Serial.write(commandPtr[i]);
+	}
+
+	delay(1000);
+}
+*/
 	if (!registered)
 	{
-		Serial.println(sizeof(LEDCommand_t));
+		//Serial.println(sizeof(LEDCommand_t));
 		
 		LEDCommand_t *LEDCommand = new LEDCommand_t;
 
@@ -101,7 +140,7 @@ void loop()
 	if (Serial.available())
 	{
 		// Command pending! TODO: Should we also be sending a length parameter so if there are 2 commands "queued" they aren't interpreted as one command?
-
+/*
 		int commandLength = 0;
 
 		size_t bufferSize = 1;
@@ -130,18 +169,83 @@ void loop()
 			commandLength++;
 
 			// TODO Is there a better way to receive all of the command>? Without this it appears to be regesting every byte/keystoke as a new command, but with this it induces a delay into the equasion
-			delay(2);
+			delay(5);
+		}
+*/
+		uint8_t *buffer = (uint8_t*)malloc(256);
+		int commandLength = Serial.readBytes(buffer, 256);
+		uint8_t *commandBuffer = (uint8_t*)realloc(buffer, commandLength);
+		// If we got here that means that all of the command's bytes should have come in!
+		
+		// Is the first byte (ie the ID) set?
+		if (commandLength >= 1)
+		{
+			uint8_t commandID = commandBuffer[0];
+			
+///			Serial.print("Found command with ID: ");
+///			Serial.println(commandID);
+
+////			digitalWrite(13, HIGH);
+////			delay(1000);
+////			digitalWrite(13, LOW);
+
+///			delay(1000);
+
+			for (std::vector<commandBinding_t>::iterator it = commands.begin(); it != commands.end(); it++)
+			{
+				if (!it->command || !it->binding)
+				{
+					for (int i = 0; i < 10; i++)
+					{
+						digitalWrite(13, HIGH);
+						delay(200);
+						digitalWrite(13, LOW);
+					}
+					Serial.print("Error with comands! Invalid command/binding! Target ID: ");
+					Serial.print(commandID);
+					Serial.println("");
+					// Something went wrong - an invalid command or binding was set up!
+					return;
+				}
+				
+				// Is this the command COSMOS is trying to execute?
+				if (it->command->id == commandID)
+				{
+///					Serial.println("Found command!");
+//					digitalWrite(13, HIGH);
+//					delay(1000);
+//					digitalWrite(13, LOW);
+					// Found the command! Execute the function, passing in the commandBuffer casted to the command_t. Assume user has set up their struct they're typecasting to correctly so it won't cause any size mismatches -> issues
+					////it->binding((command_t *)commandBuffer);
+					LEDBinding((command_t *)commandBuffer);
+//					LEDBinding(nullptr);
+
+					//digitalWrite(13, HIGH);
+				}
+			}
+
+			// TODO Ensure the freeing of commandBuffer in all cases! We don't want any memory leaks!!!!!
+		}
+		else
+		{
+			for (int i = 0; i < 10; i++)
+					{
+						digitalWrite(13, HIGH);
+						delay(500);
+						digitalWrite(13, LOW);
+					}
 		}
 
-		// If we got here that means that all of the command's bytes should have come in!
-		Serial.println("Received Command!");
-		Serial.println(commandLength);
+///	
+
+///		Serial.println("Received Command!");
+///		Serial.println(commandLength);
 
 	}
 
 	// Tick the states!
-	States::Tick();
+	////States::Tick();
 	
 	// Delay for a second so we aren't constantly reading the analog data
-	delay(1);
+	delay(5);
 }
