@@ -25,6 +25,17 @@ public:
 	 * NOTE: This does NOT register any telemetry or commands yet!
 	 */
 	static void StartCosmos();
+
+#ifndef NO_ARDUCOSMOS_COMMANDS
+	/*
+	 * Start the COSMOS telemetry sender/command sender, selectingi if it should listen for commands or not.
+	 *
+	 * NOTE: This does NOT register any telemetry or commands yet!
+	 *
+	 * @param bUseCommands Should ArduCOSMOS use commands, or should it not parse all serial data for them?
+	 */
+	static void StartCosmos(bool bUseCommands);
+#endif
 	
 #ifndef NO_ARDUCOSMOS_TELEMETRY
 	/*
