@@ -15,6 +15,19 @@
 #include "commandstate.h"
 #endif
 
+#define TO_STRUCT_NAME(NAME) NAME##_t
+
+#define DECLARE_TELEMETRY(NAME, ID) struct __attribute__((packed)) TO_STRUCT_NAME(NAME) : telemetryPacket_t { TO_STRUCT_NAME(NAME)() { telemetryPacket_t::id = ID; telemetryPacket_t::length = sizeof(TO_STRUCT_NAME(NAME)); };
+
+#define DECLARE_TELEMETRY_OneParam(NAME, ID, Type0, Name0) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; }; TO_STRUCT_NAME(NAME) NAME;
+
+// (Easy) telemetry declaration for two parameters
+#define DECLARE_TELEMETRY_TwoParams(NAME, ID, Type0, Name0, Type1, Name1) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; }; TO_STRUCT_NAME(NAME) NAME;
+
+#ifndef NO_ARDUCOSMOS_TELEMETRY
+#define REGISTER_TELEMETRY(NAME, INTERVAL) ArduCOSMOS::RegisterTelemetry(&NAME, INTERVAL);
+#endif
+
 // TODO: Implement static functionality to start/register the states (start COMSOS) functionality, and (static) functionality to register commands/telemetry
 class ArduCOSMOS
 {

@@ -9,11 +9,11 @@
 /*
  * Basic implementation for a packet to be sent to COSMOS
  */
-struct telemetryPacket_t
+struct __attribute__((packed)) telemetryPacket_t
 {
 	uint8_t length = sizeof(telemetryPacket_t);
 	uint8_t id;
-	
+
 	/* Further information (like the actual data to be logged) will be placed in "sub"-structs. A constructor should also be implemented in child structs that sets the ID/length!!! */
 };
 
