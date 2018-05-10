@@ -15,15 +15,126 @@
 #include "commandstate.h"
 #endif
 
+/*
+ * Will help convert a telemetry name to the name of a struct to help differentiate type and variable name
+ * NOTE: Works by suffixing _t to the name
+ */
 #define TO_STRUCT_NAME(NAME) NAME##_t
 
+/*
+ * Helper macro to declare the struct and implement its constructor. Missing final closing }; so variables can be implemented with other macros.
+ */
 #define DECLARE_TELEMETRY(NAME, ID) struct __attribute__((packed)) TO_STRUCT_NAME(NAME) : telemetryPacket_t { TO_STRUCT_NAME(NAME)() { telemetryPacket_t::id = ID; telemetryPacket_t::length = sizeof(TO_STRUCT_NAME(NAME)); };
 
+/*
+ * Declare / add a telemetry with a name, ID and one variable.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
 #define DECLARE_TELEMETRY_OneParam(NAME, ID, Type0, Name0) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; }; TO_STRUCT_NAME(NAME) NAME;
 
-// (Easy) telemetry declaration for two parameters
+/*
+ * Declare / add a telemetry with a name, ID and two variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
 #define DECLARE_TELEMETRY_TwoParams(NAME, ID, Type0, Name0, Type1, Name1) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; }; TO_STRUCT_NAME(NAME) NAME;
 
+/*
+ * Declare / add a telemetry with a name, ID and three variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_ThreeParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and four variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_FourParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and five variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_FiveParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and six variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_SixParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4, Type5, Name5) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; Type5 Name5; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and seven variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_SevenParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4, Type5, Name5, Type6, Name6) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; Type5 Name5; Type6 Name6; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and eight variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_EightParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4, Type5, Name5, Type6, Name6, Type7, Name7) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; Type5 Name5; Type6 Name6; Type7 Name7; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and nine variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_NineParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4, Type5, Name5, Type6, Name6, Type7, Name7, Type8, Name8) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; Type5 Name5; Type6 Name6; Type7 Name7; Type8 Name8; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * Declare / add a telemetry with a name, ID and ten variables.
+ *
+ * @param Name The name of the newly created telemetry "packet". Can later be used with NAME.someVariable = someValue;
+ * @param ID The ID that corresponds with what has been set up in COSMOS so it can be matched.
+ * @param TypeX	The type of the variable with the corresponding Name
+ * @param NameX The name of a telemetry item. Does not need to match order in cosmos, but does need to match the same Type & order.
+ */
+#define DECLARE_TELEMETRY_TenParams(NAME, ID, Type0, Name0, Type1, Name1, Type2, Name2, Type3, Name3, Type4, Name4, Type5, Name5, Type6, Name6, Type7, Name7, Type8, Name8, Type9, Name9) DECLARE_TELEMETRY(NAME, ID) Type0 Name0; Type1 Name1; Type2 Name2; Type3 Name3; Type4 Name4; Type5 Name5; Type6 Name6; Type7 Name7; Type8 Name8; Type9 Name9; }; TO_STRUCT_NAME(NAME) NAME;
+
+/*
+ * NOTE: Further macro definitions do not (currently) exist. If you want to define more variables, please implement the struct from "scratch". Please see our documentation for more information about this.
+ */
+
+/*
+ * Macro to help (further) simplify registering telemetry. Intended to be used in conjunction with DECLARE_TELEMETRY_SomeParams.
+ *
+ * NOTE: Should be used within a function (most likely void Setup()!). Will cause compile issues due to the function invocation otherwise.
+ */
 #ifndef NO_ARDUCOSMOS_TELEMETRY
 #define REGISTER_TELEMETRY(NAME, INTERVAL) ArduCOSMOS::RegisterTelemetry(&NAME, INTERVAL);
 #endif
