@@ -10,7 +10,7 @@ DECLARE_TELEMETRY_OneParam(sensorTelemetry, 0, uint16_t, value);
 ```
 
 ```cpp
-void Setup()
+void setup()
 {
 	// Start COSMOS (NOTE: This will automatically start a serial connection)
 	ArduCOSMOS::StartCosmos();
