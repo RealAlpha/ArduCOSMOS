@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map For ExampleLibrary
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TelemetryState		KEYWORD1
+CommandState		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+StartCosmos		KEYWORD2
+RegisterTelemetry	KEYWORD2
+RegisterCommand		KEYWORD2
+
+#######################################
+# "Instances" (KEYWORD2)
+#######################################
+ArduCOSMOS		KEYWORD2
+
+
+#######################################
+# Structures (KEYWORD3)
+#######################################
+
+command_t		KEYWORD3
+telemetryPacket_t	KEYWORD3
+
+#####################################
+# Macros (KEYWORD2) - TODO: These appear to not be working (yet)!
+#####################################
+
+DECLARE_TELEMETRY_OneParam KEYWORD2
+DECLARE_TELEMETRY_TwoParams KEYWORD2
