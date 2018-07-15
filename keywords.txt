@@ -6,28 +6,28 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-TelemetryState		KEYWORD1
-CommandState		KEYWORD1
+TelemetryState	KEYWORD1
+CommandState	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-StartCosmos		KEYWORD2
+StartCosmos	KEYWORD2
 RegisterTelemetry	KEYWORD2
-RegisterCommand		KEYWORD2
+RegisterCommand	KEYWORD2
 
 #######################################
 # "Instances" (KEYWORD2)
 #######################################
-ArduCOSMOS		KEYWORD2
+ArduCOSMOS	KEYWORD2
 
 
 #######################################
 # Structures (KEYWORD3)
 #######################################
 
-command_t		KEYWORD3
+command_t	KEYWORD3
 telemetryPacket_t	KEYWORD3
 
 #####################################
