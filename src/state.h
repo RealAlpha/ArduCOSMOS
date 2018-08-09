@@ -2,7 +2,6 @@
 #define ARDUCOSMOS_STATE_H_
 
 // Use STL vectors as I'm too lazy to create a linekd list from scratch
-#include <ArduinoSTL.h>
 #include <vector>
 
 /*

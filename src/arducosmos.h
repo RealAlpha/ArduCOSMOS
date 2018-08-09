@@ -191,5 +191,5 @@ private:
 	static CommandState commandState;
 #endif
 
-#endif
 };
+#endif

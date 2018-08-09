@@ -3,7 +3,7 @@
 
 #include "state.h"
 
-#include <ArduinoSTL.h>
+#include <stdint.h>
 #include <vector>
 
 /*
