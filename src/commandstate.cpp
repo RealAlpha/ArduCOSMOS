@@ -3,6 +3,8 @@
 // Include the arduino library for Serial functionality - NOTE: Assume that the serial connection has already been started
 #include "Arduino.h"
 
+ArduCOSMOS::LinkedList<commandBinding_t> CommandState::commandBindings;
+
 CommandState::CommandState()
 {
 	// Since we need to constantly be checking if new serial data is available, we will set the interval to 0ms, thus ensuring it "always" invokes the Call() function.
@@ -30,10 +32,20 @@ void CommandState::Call()
 			uint8_t commandID = commandBuffer[0];
 			
 			// Iterate over the registered commands to try and find the one matching the ID we registered
+#ifdef WITH_STD_LIB
 			for (std::vector<commandBinding_t>::iterator it = commandBindings.begin(); it != commandBindings.end(); it++)
+#else
+			for (ArduCOSMOS::LinkedList<commandBinding_t>::ListNode *it = commandBindings.begin(); it; it++)
+#endif
 			{
+				// Extract the data into a variable to avoid having to write the below code
+#ifdef WITH_STD_LIB
+				commandBinding_t data = *it;
+#else
+				commandBinding_t data = **it;
+#endif
 				// Is the command/binding valid?
-				if (!it->binding)
+				if (!data.binding)
 				{
 					// TODO - Find a better solution for this error (hanlding)
 
@@ -46,10 +58,11 @@ void CommandState::Call()
 				}
 				
 				// Is this the command COSMOS is trying to execute?
-				if (it->command.id == commandID)
+				if (data.command.id == commandID)
 				{
 					// Found the command! Execute the function, passing in the commandBuffer casted to the command_t. Assume user has set up their struct they're typecasting to correctly so it won't cause any size mismatches -> issues
-					it->binding((command_t *)commandBuffer);				}
+					data.binding((command_t *)commandBuffer);
+				}
 			}
 
 			// TODO Ensure the freeing of commandBuffer in all cases! We don't want any memory leaks!!!!!
@@ -65,5 +78,6 @@ void CommandState::Call()
 void CommandState::RegisterCommand(command_t command, commandBinding binding)
 {
 	// Register this command by creating a binding (internal representation of a command & it's associated function) and adding it to the command bindings array so it can be searched for & found when receiving a command buffer.
-	commandBindings.push_back(commandBinding_t(command, binding));
+	commandBinding_t commandBinding = commandBinding_t(command, binding);
+	commandBindings.push_back(commandBinding);
 }

@@ -4,7 +4,14 @@
 #include "state.h"
 
 #include <stdint.h>
+
+#ifdef WITH_STD_LIB
+// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
 #include <vector>
+#else
+// Otherwise, use a simple linked-list implementation.
+#include "linkedlist.h"
+#endif
 
 /*
  * Basic implementation for a command recieved from COSMOS
@@ -33,6 +40,13 @@ typedef void (*commandBinding)(command_t *command);
  */
 struct commandBinding_t
 {
+	// Default commandBinding_t constructor that does nothing; used so the linked list won't freak out.
+	commandBinding_t()
+	{
+
+	}
+
+	// commandBinding_t constructor that intiializes a command binding using a command, and a binding -> function to call when the command is detected.
 	commandBinding_t(command_t _command, commandBinding command_binding)
 	{
 		command = _command;
@@ -63,7 +77,13 @@ public:
 	void RegisterCommand(command_t command, commandBinding binding);
 
 private:
+	// Define statics
+	#ifdef WITH_STD_LIB
 	std::vector<commandBinding_t> commandBindings;
+	#else
+	static ArduCOSMOS::LinkedList<commandBinding_t> commandBindings;
+	#endif
+
 };
 
 #endif

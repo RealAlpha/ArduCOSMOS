@@ -4,7 +4,14 @@
 #include "state.h"
 
 #include <stdint.h>
+
+#ifdef WITH_STD_LIB
+// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
 #include <vector>
+#else
+// Otherwise, use a simple linked-list implementation.
+#include "linkedlist.h"
+#endif
 
 /*
  * Basic implementation for a packet to be sent to COSMOS
@@ -51,6 +58,10 @@ public:
 private:
 	long int last_time;
 
-	std::vector<telemetryRegistration_t> telemetryRegistrations;
+#ifdef WITH_STD_LIB
+	static std::vector<telemetryRegistration_t> telemetryRegistrations;
+#else
+	static ArduCOSMOS::LinkedList<telemetryRegistration_t> telemetryRegistrations;
+#endif
 };
 #endif

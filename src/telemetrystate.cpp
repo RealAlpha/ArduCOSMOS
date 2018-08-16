@@ -7,6 +7,13 @@
 // Helper function to send a telemetry packet over the serial connection (assuming it's connected)
 void sendTelemetry(telemetryPacket_t *packet);
 
+// Define statics
+#ifdef WITH_STD_LIB
+std::vector<telemetryRegistration_t> TelemetryState::telemetryRegistrations;
+#else
+ArduCOSMOS::LinkedList<telemetryRegistration_t> TelemetryState::telemetryRegistrations;
+#endif
+
 TelemetryState::TelemetryState()
 {
 	// We have our own "state" checking, so set this to a pretty minimal interval (the min. telemetry interval)
@@ -18,17 +25,26 @@ TelemetryState::TelemetryState()
 void TelemetryState::Call()
 {
 	int current_time = millis();
-
+#ifdef WITH_STD_LIB
 	for (std::vector<telemetryRegistration_t>::iterator it = telemetryRegistrations.begin(); it != telemetryRegistrations.end(); it++)
+#else
+	for (ArduCOSMOS::LinkedList<telemetryRegistration_t>::ListNode *it = telemetryRegistrations.begin(); it; it++)
+#endif
 	{
-		int delta_t = current_time - it->lastCall;
+		// Extract the data into a variable to avoid having to write the below code
+#ifdef WITH_STD_LIB
+		telemetryRegistration_t data = *it;
+#else
+		telemetryRegistration_t data = **it;
+#endif
+		int delta_t = current_time - data.lastCall;
 
 		// Was there enough of a time diference to relog this telemetry packet
-		if (delta_t >= it->interval)
+		if (delta_t >= data.interval)
 		{
-			sendTelemetry(it->tel);
+			sendTelemetry(data.tel);
 			
-			it->lastCall = current_time;
+			data.lastCall = current_time;
 		}
 	}
 }

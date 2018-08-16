@@ -8,7 +8,7 @@
 #ifndef ARDUCOSMOS_LINKEDLIST_H_
 #define ARDUCOSMOS_LINKEDLIST_H_
 // LinkedList may be used by other libraries too, so we are wrapping it in the ArduCOSMOS namespace.
-namespace ArduCOSMOS
+namespace NS_ArduCOSMOS
 {
 	// NOTE: We'll only be implementing the required functions (add to and iteration at the time of writing this comment), so this isn't a fully-fledged linked list function. Templating used since this is 
 	template <typename T> class LinkedList
@@ -20,7 +20,7 @@ namespace ArduCOSMOS
 		public:
 			T data;
 			ListNode *next = nullptr;
-			
+
 			// Overload the ++ operator so we can use it to iterate.
 			ListNode *operator++(int)
 			{
