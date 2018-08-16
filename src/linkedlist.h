@@ -21,24 +21,6 @@ namespace NS_ArduCOSMOS
 			T data;
 			ListNode *next = nullptr;
 
-			// Overload the ++ operator so we can use it to iterate.
-			ListNode *operator++(int)
-			{
-				// NOTE: This should never cause any exceptions as the current node is valid if this is being called, and the worst we can do is return a nullptr which should be handled by the receiving end.
-				return next;
-			}
-			
-			// Overload the dereference operator(s) to return the data so we can use it with the same code as std::vector
-			T operator->()
-			{
-				return data;
-			}
-			// NOTE: You may need to use **it to first dereference the ListNode, and then hit this operator to get the data. You won't hit this when using
-			T operator*()
-			{
-				return data;
-			}
-
 			// Is the current node the last item in the list?
 			bool IsLast()
 			{
@@ -48,12 +30,81 @@ namespace NS_ArduCOSMOS
 
 		};
 		
-	public:
-		// Returns the first node in the list, and NULL if the list is empty.
-		/// NOTE: small b used to be virtually identical to the std::vector library.
-		ListNode *begin()
+		// Iterator class
+		/// NOTE: Helps abstract things and avoid pointers // helps a more streamlined interface
+		class Iterator
 		{
-			return firstNode;
+		public:
+			// Default constructor; takes in a node: the node at which this iterator is pointing.
+			Iterator(ListNode *Node)
+			{
+				this->Node = Node;
+			}
+
+			// Overload the ++ operator so we can use it to iterate.
+			Iterator operator++(int)
+			{
+				// Is the current node valid, or not? (for example: is this beyond the end of the list?)
+				if (!Node) { return Iterator(nullptr); }
+
+				// Return an iterator to the next node
+				return Iterator(Node->next);
+			}
+
+			// Overload the dereference operator(s) to return the data so we can use it with the same code as std::vector
+			T &operator->()
+			{
+				// Is the current node valid, or not? (for example: is this beyond the end of the list?)
+				/// NOTE: If there are any exceptions about a constructor of a type not existing, make sure you have a default no-parameter constructor available in case you iterate over the end of a list // it needs to return a blank item.
+				/// NOTE II: The below is generally Bad Practive / "Evil", but Node should never be a nullptr anyway, or the user'll have iterated too far and still requested the data.
+				if (!Node)
+				{
+					T badPracticeButRequired = T();
+					return badPracticeButRequired;
+				}
+
+				// Since the current node is valid, we can safely return it's data
+				return Node->data;
+			}
+			// NOTE: You may need to use **it to first dereference the ListNode, and then hit this operator to get the data. You won't hit this when using
+			T &operator*()
+			{
+				// Is the current node valid, or not? (for example: is this beyond the end of the list?)
+				/// NOTE: If there are any exceptions about a constructor of a type not existing, make sure you have a default no-parameter constructor available in case you iterate over the end of a list // it needs to return a blank item.
+				/// NOTE II: The below is generally Bad Practive / "Evil", but Node should never be a nullptr anyway, or the user'll have iterated too far and still requested the data.
+				if (!Node)
+				{
+					T badPracticeButRequired = T();
+					return badPracticeButRequired;
+				}
+
+				// Since the current node is valid, we can safely return it's data
+				return Node->data;
+			}
+
+			// Gets the "low-level" list node "representation. Used for passing to erase.
+			ListNode *GetLowLevel()
+			{
+				return Node;
+			}
+
+			// TODO: Override the is valid (ie if (someIterator)) operator so we don't go beyond the end.
+			operator bool() const
+			{
+					return Node != nullptr;
+			}
+
+		private:
+			// The node this iterator is currently pointing at.
+			ListNode *Node;
+		};
+
+	public:
+		// Returns an iterator made from the first node in the list.
+		/// NOTE: small b used to be virtually identical to the std::vector library.
+		Iterator begin()
+		{
+			return Iterator(firstNode);
 		}
 
 		// Appends an item (to the start of) the list.

@@ -28,23 +28,18 @@ void TelemetryState::Call()
 #ifdef WITH_STD_LIB
 	for (std::vector<telemetryRegistration_t>::iterator it = telemetryRegistrations.begin(); it != telemetryRegistrations.end(); it++)
 #else
-	for (NS_ArduCOSMOS::LinkedList<telemetryRegistration_t>::ListNode *it = telemetryRegistrations.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<telemetryRegistration_t>::Iterator it = telemetryRegistrations.begin(); it; it++)
 #endif
 	{
-		// Extract the data into a variable to avoid having to write the below code
-#ifdef WITH_STD_LIB
-		telemetryRegistration_t data = *it;
-#else
-		telemetryRegistration_t data = **it;
-#endif
-		int delta_t = current_time - data.lastCall;
+		int delta_t = current_time - (*it).lastCall;
 
 		// Was there enough of a time diference to relog this telemetry packet
-		if (delta_t >= data.interval)
+		if (delta_t >= (*it).interval)
 		{
-			sendTelemetry(data.tel);
+			sendTelemetry((*it).tel);
 			
-			data.lastCall = current_time;
+			it.GetLowLevel()->data.lastCall = current_time;
+			(*it).lastCall = current_time;
 		}
 	}
 }

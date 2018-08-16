@@ -35,17 +35,11 @@ void CommandState::Call()
 #ifdef WITH_STD_LIB
 			for (std::vector<commandBinding_t>::iterator it = commandBindings.begin(); it != commandBindings.end(); it++)
 #else
-			for (NS_ArduCOSMOS::LinkedList<commandBinding_t>::ListNode *it = commandBindings.begin(); it; it++)
+			for (NS_ArduCOSMOS::LinkedList<commandBinding_t>::Iterator it = commandBindings.begin(); it; it++)
 #endif
 			{
-				// Extract the data into a variable to avoid having to write the below code
-#ifdef WITH_STD_LIB
-				commandBinding_t data = *it;
-#else
-				commandBinding_t data = **it;
-#endif
 				// Is the command/binding valid?
-				if (!data.binding)
+				if (!(*it).binding)
 				{
 					// TODO - Find a better solution for this error (hanlding)
 
@@ -58,10 +52,10 @@ void CommandState::Call()
 				}
 				
 				// Is this the command COSMOS is trying to execute?
-				if (data.command.id == commandID)
+				if ((*it).command.id == commandID)
 				{
 					// Found the command! Execute the function, passing in the commandBuffer casted to the command_t. Assume user has set up their struct they're typecasting to correctly so it won't cause any size mismatches -> issues
-					data.binding((command_t *)commandBuffer);
+					(*it).binding((command_t *)commandBuffer);
 				}
 			}
 

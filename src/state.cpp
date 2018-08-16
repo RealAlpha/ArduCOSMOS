@@ -48,18 +48,14 @@ bool States::UnregisterState(State *state)
 #ifdef WITH_STD_LIB
 	for (std::vector<State*>::const_iterator it = StatesArray.begin(); it != StatesArray.end(); it++)
 #else
-	for (NS_ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<State*>::Iterator it = StatesArray.begin(); it; it++)
 #endif
 	{
-#ifdef WITH_STD_LIB
 		if (*it == state)
-#else
-		if ((**it) == state)
-#endif
 
 		{
 			// TODO *actually* remove the state.
-			StatesArray.erase(it);
+			StatesArray.erase(it.GetLowLevel());
 			return true;
 		}
 	}
@@ -73,7 +69,7 @@ void States::Tick()
 #ifdef WITH_STD_LIB
 	for (std::vector<State*>::const_iterator it = StatesArray.begin(); it != StatesArray.end(); it++)
 #else
-	for (NS_ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<State*>::Iterator it = StatesArray.begin(); it; it++)
 #endif
 	{
 		(*it)->Tick();
