@@ -1,6 +1,8 @@
 # ArduCOSMOS
 ### A (Work-in-Progress) Arduino Library that Helps Implement COSMOS Telemetry & Command Functionality.
 
+[![Build Status](https://travis-ci.org/RealAlpha/ArduCOSMOS.svg?branch=master)](https://travis-ci.org/RealAlpha/ArduCOSMOS) [![Platform](https://img.shields.io/badge/platform-Arduino-blue.svg)](https://www.arduino.cc/) 
+
 ## What is ArduCOSMOS?
 Arducosmos is a Work-in-Progress library for the Arduino/Genuino platform to help simplify working with telemetry and commands using Ball Aerospace's COSMOS. We aim to reduce the arduino side of things to just a few lines! See the below example for adding some telemetry to an analog sensor:
 
