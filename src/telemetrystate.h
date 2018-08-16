@@ -1,12 +1,12 @@
-#ifndef ARDUCOSMOS_TELEMETRYSTATE_H_
-#define ARDUCOSMOS_TELEMETRYSTATE_H_
+#ifndef NS_ArduCOSMOS_TELEMETRYSTATE_H_
+#define NS_ArduCOSMOS_TELEMETRYSTATE_H_
 
 #include "state.h"
 
 #include <stdint.h>
 
 #ifdef WITH_STD_LIB
-// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
+// If the C++ standard library is available (-> #define in NS_ArduCOSMOS.h is uncommented), then use std.
 #include <vector>
 #else
 // Otherwise, use a simple linked-list implementation.
@@ -61,7 +61,7 @@ private:
 #ifdef WITH_STD_LIB
 	static std::vector<telemetryRegistration_t> telemetryRegistrations;
 #else
-	static ArduCOSMOS::LinkedList<telemetryRegistration_t> telemetryRegistrations;
+	static NS_ArduCOSMOS::LinkedList<telemetryRegistration_t> telemetryRegistrations;
 #endif
 };
 #endif

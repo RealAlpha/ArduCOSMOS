@@ -4,7 +4,7 @@
 #ifdef WITH_STD_LIB
 	std::vector<State*> States::StatesArray;
 #else
-	ArduCOSMOS::LinkedList<State*> States::StatesArray;
+	NS_ArduCOSMOS::LinkedList<State*> States::StatesArray;
 #endif
 
 State::State()
@@ -32,7 +32,7 @@ void State::Call()
 #ifdef WITH_STD_LIB
 	std::vector<State*> States::GetStates()
 #else
-	ArduCOSMOS::LinkedList<State*> States::GetStates()
+	NS_ArduCOSMOS::LinkedList<State*> States::GetStates()
 #endif
 {
 	return StatesArray;
@@ -48,7 +48,7 @@ bool States::UnregisterState(State *state)
 #ifdef WITH_STD_LIB
 	for (std::vector<State*>::const_iterator it = StatesArray.begin(); it != StatesArray.end(); it++)
 #else
-	for (ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
 #endif
 	{
 #ifdef WITH_STD_LIB
@@ -73,7 +73,7 @@ void States::Tick()
 #ifdef WITH_STD_LIB
 	for (std::vector<State*>::const_iterator it = StatesArray.begin(); it != StatesArray.end(); it++)
 #else
-	for (ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<State*>::ListNode *it = StatesArray.begin(); it; it++)
 #endif
 	{
 		(*it)->Tick();

@@ -3,7 +3,7 @@
 // Include the arduino library for Serial functionality - NOTE: Assume that the serial connection has already been started
 #include "Arduino.h"
 
-ArduCOSMOS::LinkedList<commandBinding_t> CommandState::commandBindings;
+NS_ArduCOSMOS::LinkedList<commandBinding_t> CommandState::commandBindings;
 
 CommandState::CommandState()
 {
@@ -35,7 +35,7 @@ void CommandState::Call()
 #ifdef WITH_STD_LIB
 			for (std::vector<commandBinding_t>::iterator it = commandBindings.begin(); it != commandBindings.end(); it++)
 #else
-			for (ArduCOSMOS::LinkedList<commandBinding_t>::ListNode *it = commandBindings.begin(); it; it++)
+			for (NS_ArduCOSMOS::LinkedList<commandBinding_t>::ListNode *it = commandBindings.begin(); it; it++)
 #endif
 			{
 				// Extract the data into a variable to avoid having to write the below code

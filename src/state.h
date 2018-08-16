@@ -1,8 +1,8 @@
-#ifndef ARDUCOSMOS_STATE_H_
-#define ARDUCOSMOS_STATE_H_
+#ifndef NS_ArduCOSMOS_STATE_H_
+#define NS_ArduCOSMOS_STATE_H_
 
 #ifdef WITH_STD_LIB
-// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
+// If the C++ standard library is available (-> #define in NS_ArduCOSMOS.h is uncommented), then use std.
 #include <vector>
 #else
 // Otherwise, use a simple linked-list implementation.
@@ -42,7 +42,7 @@ public:
 #ifdef WITH_STD_LIB
 	static std::vector<State*> GetStates();
 #else
-	static ArduCOSMOS::LinkedList<State*> GetStates();
+	static NS_ArduCOSMOS::LinkedList<State*> GetStates();
 #endif
 	// "Register" / add a state
 	static void RegisterState(State *state);
@@ -58,7 +58,7 @@ private:
 #ifdef WITH_STD_LIB
 	static std::vector<State*> StatesArray;
 #else
-	static ArduCOSMOS::LinkedList<State*> StatesArray;
+	static NS_ArduCOSMOS::LinkedList<State*> StatesArray;
 #endif
 };
 #endif

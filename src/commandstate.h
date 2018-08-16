@@ -1,12 +1,12 @@
-#ifndef ARDUCOSMOS_COMMANDSTATE_H_
-#define ARDUCOSMOS_COMMANDSTATE_H_
+#ifndef NS_ArduCOSMOS_COMMANDSTATE_H_
+#define NS_ArduCOSMOS_COMMANDSTATE_H_
 
 #include "state.h"
 
 #include <stdint.h>
 
 #ifdef WITH_STD_LIB
-// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
+// If the C++ standard library is available (-> #define in NS_ArduCOSMOS.h is uncommented), then use std.
 #include <vector>
 #else
 // Otherwise, use a simple linked-list implementation.
@@ -81,7 +81,7 @@ private:
 	#ifdef WITH_STD_LIB
 	std::vector<commandBinding_t> commandBindings;
 	#else
-	static ArduCOSMOS::LinkedList<commandBinding_t> commandBindings;
+	static NS_ArduCOSMOS::LinkedList<commandBinding_t> commandBindings;
 	#endif
 
 };

@@ -11,7 +11,7 @@ void sendTelemetry(telemetryPacket_t *packet);
 #ifdef WITH_STD_LIB
 std::vector<telemetryRegistration_t> TelemetryState::telemetryRegistrations;
 #else
-ArduCOSMOS::LinkedList<telemetryRegistration_t> TelemetryState::telemetryRegistrations;
+NS_ArduCOSMOS::LinkedList<telemetryRegistration_t> TelemetryState::telemetryRegistrations;
 #endif
 
 TelemetryState::TelemetryState()
@@ -28,7 +28,7 @@ void TelemetryState::Call()
 #ifdef WITH_STD_LIB
 	for (std::vector<telemetryRegistration_t>::iterator it = telemetryRegistrations.begin(); it != telemetryRegistrations.end(); it++)
 #else
-	for (ArduCOSMOS::LinkedList<telemetryRegistration_t>::ListNode *it = telemetryRegistrations.begin(); it; it++)
+	for (NS_ArduCOSMOS::LinkedList<telemetryRegistration_t>::ListNode *it = telemetryRegistrations.begin(); it; it++)
 #endif
 	{
 		// Extract the data into a variable to avoid having to write the below code
