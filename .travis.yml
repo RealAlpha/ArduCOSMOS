@@ -1,0 +1,14 @@
+language: c
+sudo: false
+
+# Set up the Arduino toolchain on the target build instance
+before_install:
+  - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+
+# Main script - there are currently no prerequisites, so get straight to building the main platform of the library.
+script:
+  - build_main_platforms
+
+# We don't currently have any unit tests for the library, so simply print a message stating that (and that the build went well)
+after_success:
+  - echo "The library successfully built! Please note that this does NOT mean that it functions properly (you'll have to verify that yourself for now). Congratulations!"
