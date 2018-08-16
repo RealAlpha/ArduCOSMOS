@@ -8,6 +8,9 @@
 #ifndef ARDUCOSMOS_ARDUCOSMOS_H_
 #define ARDUCOSMOS_ARDUCOSMOS_H_
 
+// Please uncomment the line below if you're compiling with a toolchain that supports the standard library, or more specifically, std::vector.
+#define WITH_STD_LIB
+
 #ifndef NO_ARDUCOSMOS_TELEMETRY
 #include "telemetrystate.h"
 #endif

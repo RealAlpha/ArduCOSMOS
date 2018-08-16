@@ -1,8 +1,13 @@
 #ifndef ARDUCOSMOS_STATE_H_
 #define ARDUCOSMOS_STATE_H_
 
-// Use STL vectors as I'm too lazy to create a linekd list from scratch
+#ifdef WITH_STD_LIB
+// If the C++ standard library is available (-> #define in arducosmos.h is uncommented), then use std.
 #include <vector>
+#else
+// Otherwise, use a simple linked-list implementation.
+#include "linkedlist.h"
+#endif
 
 /*
  * State class - a base class for states/tasks that need to be executed at a specific interval.
@@ -34,8 +39,11 @@ class States
 {
 public:
 	// Return all of the available states.
+#ifdef WITH_STD_LIB
 	static std::vector<State*> GetStates();
-
+#else
+	static ArduCOSMOS::LinkedList<State*> GetStates();
+#endif
 	// "Register" / add a state
 	static void RegisterState(State *state);
 
@@ -47,6 +55,10 @@ public:
 
 private:
 	// The variable that actually stores all of the states.
+#ifdef WITH_STD_LIB
 	static std::vector<State*> StatesArray;
+#else
+	static ArduCOSMOS::LinkedList<State*> StatesArray;
+#endif
 };
 #endif
