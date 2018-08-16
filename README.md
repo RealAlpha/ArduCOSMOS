@@ -43,12 +43,13 @@ COSMOS is a telemetry gathering and command sending tool developed by Ball Aeros
 We're currently still in the process of finishing up the library and writing documentation to simplify the usage of it. If you have experience using COSMOS (and its configuration) and just want to give it a try, you can download the GitHub repository, place it in your arduino libraries, and then include the `arducosmos.h` header. Also check the dependencies section!
 
 ## Dependencies
-ArduCOSMOS currently bundles it's own "state machine" to multiplex all of it's functionality. There is however one dependancy that you will need to install to work with ArduCOSMOS in this stage of it's development. This is [ArduinoSTL](https://github.com/mike-matera/ArduinoSTL). This is currently used for it's variable-length array (std::vector), but we will be replacing this with our own linked-list implementation to simplify the installation in the long run. There are currently no other dependancies ArduCOSMOS.
+ArduCOSMOS currently bundles it's own "state machine" to multiplex all of it's functionality. Previously, ArduCOSMOS also depended on ArduinoSTL for `std::vector`, but we have now bundled an `std::vector`-like linked list implementation with ArduCOSMOS. If your toolchain support the STL library, and more specifically, `std::vector`, you may switch over to using that by defining `WITH_STD_LIB` in `state.h`. There are currently no other dependancies ArduCOSMOS.
 
 ## Supported Platforms
 As of right now, we have only been able to verify full support for the following (Arduino) boards:
 - Arduino Uno r3
 - Arduino Mega r3
+- Generic STM32F103C8-based development board with STM32Arduino (NOTE: Works both with `WITH_STD_LIB` and without `WITH_STD_LIB`)
 
 We do not (currently) have any platform-specific code, so we expect ArduCOSMOS to work on all (Arduino) boards, but can not guarantee this. Have you successfully managed to get ArduCOSMOS to work on another board? Then please consider submitting a PR adding your board to the above list! Experiencing issues (with a board)? Please open up an issue with as much detailed information as you can so we can look into the issue!
 
